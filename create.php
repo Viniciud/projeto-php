@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefoneErro = null;
     $emailErro = null;
     $cpfErro = null;
+    $matriculaErro = null;
 
     if (!empty($_POST)) {
         $validacao = True;
@@ -27,6 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $cpf = $_POST['cpf'];
         } else {
             $cpfErro = 'Por favor digite o CPF!';
+            $validacao = False;
+        }
+
+        if (!empty($_POST['matricula'])) {
+            $matricula = $_POST['matricula'];
+        } else {
+            $matriculaErro = 'Por favor digite a Matricula!';
             $validacao = False;
         }
 
@@ -50,8 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $validacao = False;
         }
 
-        if (!empty($_POST['dataNascimento'])) {
-            $dataNasc = date('Y-d-m', strtotime($_POST['dataNascimento']));
+        if (!empty($_POST['dataNasc'])) {
+            $dataNasc = date('Y-d-m', strtotime($_POST['dataNasc']));
         } else {
             $dataNascErro = 'Por favor preencha a data de nascimento!';
             $validacao = False;
@@ -66,9 +74,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO pessoa (`cpf`, `nome`, `email`, `dataNascimento`, `telefone`) VALUES(?,?,?,?,?)";
         $q = $pdo->prepare($sql);
         $q->execute(array($cpf, $nome, $email, $dataNasc, $telefone));
-        exit;
+
+        $sql = "INSERT INTO aluno (`matricula`, `cpf`) VALUES(?,?)";
+        $query = $pdo->prepare($sql);
+        $query->execute(array($matricula, $cpf));
         Banco::desconectar();
-        header("Location: index.php");
+        header("Location: http://localhost/projeto-crud-php/");
+        die();
     }
 }
 ?>
@@ -93,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="create.php" method="POST">
-
+                    
 
                     <div class="control-group <?php echo !empty($cpfErro) ? 'error ' : ''; ?>">
                         <label class="control-label">cpf</label>
@@ -105,6 +117,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <?php endif; ?>
                         </div>
                     </div>
+
+
+                    <div class="control-group <?php echo !empty($matriculaErro) ? 'error ' : ''; ?>">
+                        <label class="control-label">Matrícula</label>
+                        <div class="controls">
+                            <input size="11" class="form-control" name="matricula" type="text" placeholder="Matrícula"
+                                   value="<?php echo !empty($matricula) ? $matricula : ''; ?>">
+                            <?php if (!empty($matriculaErro)): ?>
+                                <span class="text-danger"><?php echo $matriculaErro; ?></span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
 
                     <div class="control-group  <?php echo !empty($nomeErro) ? 'error ' : ''; ?>">
                         <label class="control-label">Nome</label>
