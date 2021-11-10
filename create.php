@@ -64,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dataNascErro = 'Por favor preencha a data de nascimento!';
             $validacao = False;
         }
-        
     }
 
 //Inserindo no Banco:
