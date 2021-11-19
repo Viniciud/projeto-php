@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if (!empty($_POST['dataNasc'])) {
-            $dataNasc = date('Y-d-m', strtotime($_POST['dataNasc']));
+            $dataNasc = date('Y-m-d', strtotime($_POST['dataNasc']));
         } else {
             $dataNascErro = 'Por favor preencha a data de nascimento!';
             $validacao = False;
@@ -70,15 +70,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($validacao) {
         $pdo = Banco::conectar();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO pessoa (`cpf`, `nome`, `email`, `dataNascimento`, `telefone`) VALUES(?,?,?,?,?)";
+        $sql = "INSERT INTO aluno (`cpf`, `nome`, `email`, `dataNascimento`, `telefone`, `matricula`) VALUES(?,?,?,?,?,?)";
         $q = $pdo->prepare($sql);
-        $q->execute(array($cpf, $nome, $email, $dataNasc, $telefone));
+        $q->execute(array($cpf, $nome, $email, $dataNasc, $telefone, $matricula));
 
-        $sql = "INSERT INTO aluno (`matricula`, `cpf`) VALUES(?,?)";
-        $query = $pdo->prepare($sql);
-        $query->execute(array($matricula, $cpf));
         Banco::desconectar();
-        header("Location: http://localhost/projeto-crud-php/");
+        header("Location: /");
         die();
     }
 }

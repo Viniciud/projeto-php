@@ -23,7 +23,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Id</th>
+                            <th scope="col">Matrícula</th>
                             <th scope="col">Nome</th>
                             <th scope="col">Email</th>
                             <th scope="col">Data de Nascimento</th>
@@ -35,7 +35,7 @@
                         <?php
                         include 'banco.php';
                         $pdo = Banco::conectar();
-                        $sql = 'SELECT * FROM aluno INNER JOIN pessoa ON aluno.cpf= pessoa.cpf GROUP BY aluno.cpf';
+                        $sql = 'SELECT * FROM aluno';
 
                         foreach($pdo->query($sql)as $row)
                         {

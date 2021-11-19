@@ -15,7 +15,7 @@ if(!empty($_POST))
     //Delete do banco:
     $pdo = Banco::conectar();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "DELETE FROM pessoa where cpf = ?";
+    $sql = "DELETE FROM aluno where cpf = ?";
     $q = $pdo->prepare($sql);
     $q->execute(array($cpf));
     Banco::desconectar();
